@@ -1,7 +1,7 @@
 <?php
 
 // require the setup file
-require_once('lib/PHPContactor.setup.php')
+require_once('../lib/PHPContactor.setup.php')
 
 ?>
 <html>
@@ -23,19 +23,17 @@ require_once('lib/PHPContactor.setup.php')
 	<form name="contactForm" action="lib/PHPContactor.setup.php" method="post">
 
 		<!-- ERROR PRINTING METHOD ONE - GROUP -->
-		<?php if($errors): ?>
-			<?php foreach($errors as $errorMessage): ?>
+		<?php if($cform->hasErrors()): ?>
+			<?php foreach($cform->getErrors() as $errorMessage): ?>
 				<div class="error"><?php print $errorMessage ?></div>
 			<?php endforeach; ?>
 		<?php endif ?>
 
-		<!-- SET YOUR REQUIRED FIELDS HERE -->
-		<input type="hidden" name="_required" value="name, message" />
+    <?php $cform->printErrorMessages() ?>
 
-		<!-- ERROR PRINTING METHOD TWO - INLINE -->
 		<label for="field_name">Name:</label>
 		<input type="text" name="contactForm[name]" id="field_name" class="someclass <?php $cform->printErrorClass('name') ?>" />
-		<?php $cform->printErrorMessage('name'); ?>
+		<div class="error"><?php $cform->getErrorMessage('name'); ?></div>
 
 		<label for="field_message">Message:</label>
 		<textarea name="contactForm[message]" id="field_message"></textarea>

@@ -9,10 +9,15 @@ class PHPContactor
   private $settings = array();
 
   /**
+   * Store the errors if any occure for later display.
+   */
+  private $errors = array();
+
+  /**
    * Store the values that will be posted here
    * @var array
    */
-  private $values;
+  private $emailValues;
 
   /**
    * Setup the project
@@ -35,11 +40,19 @@ class PHPContactor
   }
 
   /**
+   * Gets an array of errors that can be used if the form needs more info.
+   */
+  public function getErrors()
+  {
+    // @todo: get errors if there are any
+  }
+
+  /**
    * Check the form to see if it's valid or not
    */
   public function submittedAndValid()
   {
-    // todo: check form was submitted, then validate
+    // @todo: check form was submitted, then validate
   }
 
   /**
@@ -47,6 +60,44 @@ class PHPContactor
    */
   public function process()
   {
-    // todo: process the form, get the values and send an email
+    // @todo: process the form, get the values and send an email
+  }
+
+  /**
+   * Print all errors, using the error format supplied in settings.
+   * @return string
+   */
+  public function printErrorMessages()
+  {
+    foreach($this->errors as $name => $error)
+    {
+      $this->printErrorMessage($name);
+    }
+  }
+
+  /**
+   * Print one message as defined as by the name given.
+   */
+  public function printErrorMessage($name)
+  {
+    if($error = $this->getErrorMessage($name))
+    {
+      echo str_replace('%%error%%', $error, $this->settings['error_format']);
+    }
+  }
+
+  /**
+   * Get one error message, or return false if it does not exist.
+   */
+  public function getErrorMessage($name)
+  {
+    if(array_key_exists($name, $this->errors))
+    {
+      return $this->errors[$name];
+    }
+    else
+    {
+      return false;
+    }
   }
 }
