@@ -28,9 +28,9 @@ else
   // Required fields here
   // key == name of the field (e.g. 'email' for the field with name="contactForm[name]")
   $required = array(
-    'name' => true,
-    'email' => true,
-    'phone' => true,
+    'name' => 'required',
+    'email' => 'email',
+    'phone' => 'required',
   );
 }
 

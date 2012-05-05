@@ -150,6 +150,17 @@ class PHPContactor
     {
       switch($type)
       {
+        case 'email':
+          if($rule == true)
+          {
+            $filtered = filter_var($value, FILTER_VALIDATE_EMAIL);
+            if($filtered === false)
+            {
+              // if false, we have an invalid email
+              $this->errors[$name] = sprintf('The %s field is required to be a valid email.', $name);
+            }
+          }
+        break;
         case 'required':
           if($rule == true && empty($value))
           {
@@ -182,7 +193,13 @@ class PHPContactor
       $requirements = $this->required[$name];
 
       // ensure we have an array, === to true means just required
-      if($requirements === true || !is_array($requirements))
+      if($requirements == 'email')
+      {
+        $requirements = array(
+          'email' => true,
+        );
+      }
+      elseif($requirements === true || $requirements === 'required' || !is_array($requirements))
       {
         // this is the base requirement structure we'll want to keep consistant
         // @todo: break out the setup so we can have other types of requirements
@@ -258,9 +275,9 @@ class PHPContactor
    */
   public function printErrorClass($name)
   {
-    if($this->getErrorMessage($name))
+    if($error = $this->getErrorMessage($name))
     {
-      return $this->settings['error_class'];
+      print $this->settings['error_class'];
     }
   }
 
