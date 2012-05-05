@@ -267,8 +267,7 @@ class PHPContactor
    */
   protected function validateCaptcha()
   {
-    $privatekey = "your_private_key";
-    $resp = recaptcha_check_answer($privatekey,
+    $resp = recaptcha_check_answer($this->settings['recaptcha_private_key'],
                                    $_SERVER["REMOTE_ADDR"],
                                    $_POST["recaptcha_challenge_field"],
                                    $_POST["recaptcha_response_field"]);
