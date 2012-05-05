@@ -285,6 +285,34 @@ class PHPContactor
   }
 
   /**
+   * Build options for select elements, mark a current value as
+   * selected if it's been submitted already.
+   */
+  public function printOptionElements($name, $options)
+  {
+    // store the output here
+    $optionElements = array();
+
+    foreach($options as $option)
+    {
+      $selected = '';
+      if(isset($this->emailValues[$name]) && $this->emailValues[$name] == $option)
+      {
+        $selected = 'selected="selected"';
+      }
+
+      // htmlescape the value for use in html
+      $value = htmlentities($option);
+
+      // build the option markup
+      $optionElements[] = sprintf('<option value="%s" %s>%s</option>', $value, $selected, $value);
+    }
+
+    // return the html list of options
+    print implode("\n", $optionElements) . "\n";
+  }
+
+  /**
    * Send the email with the info
    * @todo: right now this is a very basic text email, may
    *        be good to add template support or something later.

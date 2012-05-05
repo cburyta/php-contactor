@@ -42,13 +42,25 @@ require_once('../lib/PHPContactor.setup.php')
     </div>
 
     <div>
-      <label for="field_message">Message:</label>
-      <textarea name="contactForm[message]" id="field_message"></textarea>
+      <label for="field_email">Email:</label>
+      <input type="text" name="contactForm[email]" id="field_email" class="someclass <?php $cform->printErrorClass('email') ?>" />
     </div>
 
     <div>
-      <label for="field_other">Other:</label>
-      <textarea name="contactForm[other]" id="field_other"></textarea>
+      <label for="field_phone">Phone:</label>
+      <input type="text" name="contactForm[phone]" id="field_phone" class="someclass <?php $cform->printErrorClass('phone') ?>" />
+    </div>
+
+    <div>
+      <label for="field_subject">Subject:</label>
+      <select name="contactForm[subject]" id="field_other">
+        <?php $cform->printOptionElements('subject', array('General', 'Website Help', 'Other')); ?>
+      </select>
+    </div>
+
+    <div>
+      <label for="field_message">Message:</label>
+      <textarea name="contactForm[message]" id="field_message"></textarea>
     </div>
 
     <!-- USE THE PHP FORM TO PRINT YOUR CAPTCHA -->
