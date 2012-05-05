@@ -1,11 +1,11 @@
 <?php
 
-require_once('PHPContactor.class.php');
+require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PHPContactor.class.php');
 
 // MOST SETTINGS WOULD GO HERE
 // E.G. THE FROM ADDRESS, CAPTCHA KEYS, SUBJECT LINES ETC...
 // Also if your working on dev, you can use a settings.php file to store these in rather than placing your stuff here.
-if(file_exists('settings.php'))
+if(file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'settings.php'))
 {
   include('settings.php');
 }

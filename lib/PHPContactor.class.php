@@ -4,7 +4,7 @@
 // @todo: if ever we need more support for different captchas,
 //        probably a good idea to break includes for captcha libs
 //        into sub folders
-require_once('vendor/recaptchalib.php');
+require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'recaptchalib.php');
 
 class PHPContactor
 {
@@ -33,10 +33,11 @@ class PHPContactor
     // get defaults
     $_default_settings = array(
       'form_name'        => 'contactForm', // this need to be in sync with the form name and the form fields
-      'to_emails'         => 'To Name<to_name@example.com>,To Name 2<to_name_2@example.com>',
+      'to_emails'        => 'To Name<to_name@example.com>,To Name 2<to_name_2@example.com>',
       'subject'          => 'Subject line here',
       'captcha_service'  => 'recaptcha',
-      'recaptcha_api'    => 'API-KEY-HERE',
+      'recaptcha_public_key'  => '',
+      'recaptcha_private_key' => '',
       'success_redirect' => '/thankyou-page', // could be used to redirect to to any page on success
       'error_format'     => '<div class="error">%%error%%</div>', // this would provide easy customization of error messages if needed
     );
@@ -141,7 +142,7 @@ class PHPContactor
    */
   public function printCaptcha()
   {
-    return '<p>@todo build captcha</p>';
+    echo recaptcha_get_html($this->settings['recaptcha_public_key']);
   }
 
   /**
