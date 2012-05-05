@@ -87,11 +87,11 @@ _Replace SOMETHING with that fields name_
 
 There are 2 main points to be aware of with errors.
 
-- Display errors somewhere by adding the following somewhere on the page.
+Display errors somewhere by adding the following somewhere on the page.
 
     <?php $cform->printErrorMessages() ?>
 
-- In the form element, use the printErrorClass to add an error class for targeting with CSS or JavaScript on a field if that field has an error. Note that something is that form files name.
+In the form element, use the printErrorClass to add an error class for targeting with CSS or JavaScript on a field if that field has an error. Note that something is that form files name.
 
     <input type="text" name="contactForm[SOMETHING]" class="<?php $cform->printErrorClass('SOMETHING') ?>"
 
