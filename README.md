@@ -9,13 +9,7 @@ A php contact form that's easy to reuse and provides configurability.
 ## Setup
 
 1. Copy lib folder to your site
-
-The lib folder has most of the magic in it. Also, there is a copy of the recaptcha libs for php.
-
 2. Update PHPContactor.setup.php
-
-That file has settings, and required field definitions. 
-
 3. Build your form
 
 There is an example form in the examples folder. You can use that as a starting point.
