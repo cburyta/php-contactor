@@ -52,6 +52,7 @@ class PHPContactor
    */
   public function submittedAndValid()
   {
+    var_dump($_POST[$this->settings['form_name']]);exit;
     // @todo: check form was submitted, then validate
   }
 
@@ -61,6 +62,7 @@ class PHPContactor
   public function process()
   {
     // @todo: process the form, get the values and send an email
+    $this->sendEmail();
   }
 
   /**
@@ -127,5 +129,33 @@ class PHPContactor
   public function printCaptcha()
   {
     return '<p>@todo build captcha</p>';
+  }
+
+  /**
+   * Send the email with the info
+   * @todo: right now this is a very basic text email, may
+   *        be good to add template support or something later.
+   */
+  protected function sendEmail()
+  {
+    // build the message
+    $message = "\nEmail form submission.";
+
+    // for every value, we'll add a line.
+    foreach($this->values as $name => $value)
+    {
+      $message .= "\n$name  :  $value";
+    }
+
+    // wordwrap at 70 chars
+    $message = wordwrap($message, 70);
+
+    // add headers to support from addressi
+    $from = (empty($this->settings['from_name'])) ? $from_email : $from_name . ' <' . $from_email . '>';
+    $headers = 'From: ' . $from . "\r\n" .
+      'Reply-To: ' . $from . "\r\n" .
+
+    // send email
+    mail($this->settings['to_emails'], $this->settings['subject'], $message);
   }
 }
