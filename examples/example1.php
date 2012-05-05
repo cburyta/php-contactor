@@ -38,17 +38,17 @@ require_once('../lib/PHPContactor.setup.php')
 
     <div>
       <label for="field_name">Name:</label>
-      <input type="text" name="contactForm[name]" id="field_name" class="someclass <?php $cform->printErrorClass('name') ?>" />
+      <input type="text" name="contactForm[name]" id="field_name" value="<?php $cform->printCurrentValue('name') ?>" class="someclass <?php $cform->printErrorClass('name') ?>" />
     </div>
 
     <div>
       <label for="field_email">Email:</label>
-      <input type="text" name="contactForm[email]" id="field_email" class="someclass <?php $cform->printErrorClass('email') ?>" />
+      <input type="text" name="contactForm[email]" id="field_email" value="<?php $cform->printCurrentValue('email') ?>" class="someclass <?php $cform->printErrorClass('email') ?>" />
     </div>
 
     <div>
       <label for="field_phone">Phone:</label>
-      <input type="text" name="contactForm[phone]" id="field_phone" class="someclass <?php $cform->printErrorClass('phone') ?>" />
+      <input type="text" name="contactForm[phone]" id="field_phone" value="<?php $cform->printCurrentValue('phone') ?>" class="someclass <?php $cform->printErrorClass('phone') ?>" />
     </div>
 
     <div>
@@ -60,7 +60,7 @@ require_once('../lib/PHPContactor.setup.php')
 
     <div>
       <label for="field_message">Message:</label>
-      <textarea name="contactForm[message]" id="field_message"></textarea>
+      <textarea name="contactForm[message]" id="field_message"><?php $cform->printCurrentValue('message') ?></textarea>
     </div>
 
     <!-- USE THE PHP FORM TO PRINT YOUR CAPTCHA -->

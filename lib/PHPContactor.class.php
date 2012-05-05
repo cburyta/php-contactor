@@ -78,6 +78,16 @@ class PHPContactor
     // get the values
     $this->emailValues = $_POST[$this->settings['form_name']];
 
+    // fix magic quotes
+    foreach($this->emailValues as $name => $value)
+    {
+      // fix: handle magic quote servers, though this is always false in php 5.4+
+      if (get_magic_quotes_gpc())
+      {
+        $this->emailValues[$name] = stripcslashes($value);
+      }
+    }
+
     // validate the fields for the form itself
     $this->validate();
 
@@ -310,6 +320,17 @@ class PHPContactor
 
     // return the html list of options
     print implode("\n", $optionElements) . "\n";
+  }
+
+  /**
+   * Provide a method to print the current value.
+   */
+  public function printCurrentValue($name)
+  {
+    if(isset($this->emailValues[$name]))
+    {
+      print htmlspecialchars($this->emailValues[$name]);
+    }
   }
 
   /**
