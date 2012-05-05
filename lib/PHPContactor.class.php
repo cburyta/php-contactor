@@ -15,6 +15,12 @@ class PHPContactor
   private $settings = array();
 
   /**
+   * Rules for validating our form values
+   * @var array
+   */
+  private $required = array();
+
+  /**
    * Store the errors if any occure for later display.
    */
   private $errors = array();
@@ -23,7 +29,7 @@ class PHPContactor
    * Store the values that will be posted here
    * @var array
    */
-  private $emailValues;
+  private $emailValues = array();
 
   /**
    * Setup the project
@@ -59,33 +65,123 @@ class PHPContactor
    */
   public function submittedAndValid()
   {
-    if(isset($_POST[$this->settings['form_name']]))
+    // if we don't have POST data to check, we're probably
+    // not trying to submit a form
+    if(!isset($_POST[$this->settings['form_name']]))
     {
-      $this->values = $_POST[$this->settings['form_name']];
+      return false;
     }
 
-    // validate captcha
-    $privatekey = $this->settings['recaptcha_private_key'];
-    $resp = recaptcha_check_answer($privatekey,
-                                   $_SERVER["REMOTE_ADDR"],
-                                   $_POST["recaptcha_challenge_field"],
-                                   $_POST["recaptcha_response_field"]);
+    // get the values
+    $this->emailValues = $_POST[$this->settings['form_name']];
 
-    if (!$resp->is_valid) {
-      // What happens when the CAPTCHA was entered incorrectly
-      $this->errors['captcha'] = "The reCAPTCHA wasn't entered correctly. Go back and try it again." .
-                                 "(reCAPTCHA said: " . $resp->error . ")";
-    }
+    // validate the fields for the form itself
+    $this->validate();
 
+    // validate the captcha fields
+    $this->validateCaptcha();
+
+    // if we have any errors, we don't do anything,
+    // since we should be calling the validate from the same
+    // page that the form is called on, we don't need to redirect
+    // or anything yet, the form page submits to itself, and thus
+    // we just let it be now
     if(count($this->errors) > 0)
     {
       return false;
     }
 
-    // empyt means we are not valid
-    return (empty($this->values)) ? false : true;
+    // empty means we are not valid
+    return true;
 
     // @todo: check form was submitted, then validate
+  }
+
+  /**
+   * Verify and check data against the required options.
+   */
+  protected function validate()
+  {
+    foreach($this->emailValues as $name => $value)
+    {
+      $rules = $this->getValidationRules($name);
+
+      // if we have rules, it needs to be checked
+      if($rules !== false)
+      {
+        $this->validateField($name, $value, $rules);
+      }
+    }
+  }
+
+  /**
+   * Validate one field with the ruels provided
+   * @param string $name The name of the field without the formname appended.
+   * @param string $value
+   * @param array|false $rules
+   */
+  protected function validateField($name, $value, $rules = false)
+  {
+    // no rules? we're already valid because its an optional field
+    if($rules === false)
+    {
+      return true;
+    }
+
+    // check count of existing errors,
+    // this setup provides a method for us to validate a form, store
+    // errors, and check later to see how many errors
+    // this particular field generated.
+    // @todo: the errors are set still one per field, so that means one error per field still, add ability to add multiple errors per field
+    $existingErrorCount = count($this->errors);
+
+    // switch per the rules that we need to validate for
+    foreach($rules as $type => $rule)
+    {
+      switch($type)
+      {
+        case 'required':
+          if($rule == true && empty($value))
+          {
+            // add an error
+            $this->errors[$name] = sprintf('The %s field is required.', $name);
+          }
+      }
+    }
+
+    // no errors means a happy form
+    return count($this->errors) > $existingErrorCount ? true : false;
+  }
+
+  /**
+   * Get the rule that we need to validate a rule
+   * Note that for items that their validation is a boolean false,
+   * they are considered optional.
+   * If their required option is a boolean true, we'll format it a bit
+   * to keep a consistant array return structure.
+   */
+  protected function getValidationRules($name)
+  {
+    if(isset($this->required[$name]))
+    {
+      // get the requirements
+      $requirements = $this->required[$name];
+
+      // ensure we have an array, === to true means just required
+      if($requirements === true || !is_array($requirements))
+      {
+        // this is the base requirement structure we'll want to keep consistant
+        // @todo: break out the setup so we can have other types of requirements
+        // e.g. "required", "email"...
+        $requirements = array(
+          'required' => true,
+        );
+      }
+    }
+    else
+    {
+      return false;
+    }
   }
 
   /**
@@ -164,6 +260,29 @@ class PHPContactor
   }
 
   /**
+   * Validate the captcha, sets errors if not valid
+   */
+  protected function validateCaptcha()
+  {
+    $privatekey = "your_private_key";
+    $resp = recaptcha_check_answer($privatekey,
+                                   $_SERVER["REMOTE_ADDR"],
+                                   $_POST["recaptcha_challenge_field"],
+                                   $_POST["recaptcha_response_field"]);
+
+    if (!$resp->is_valid)
+    {
+      // What happens when the CAPTCHA was entered incorrectly
+      $this->errors['_captcha'] = sprintf('The reCAPTCHA wasn\'t entered correctly. Go back and try it again. (reCAPTCHA said: %s)', $resp->error);
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+
+  /**
    * Send the email with the info
    * @todo: right now this is a very basic text email, may
    *        be good to add template support or something later.
@@ -174,7 +293,7 @@ class PHPContactor
     $message = "\nEmail form submission.";
 
     // for every value, we'll add a line.
-    foreach($this->values as $name => $value)
+    foreach($this->emailValues as $name => $value)
     {
       $message .= "\n$name  :  $value";
     }
