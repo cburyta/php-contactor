@@ -20,7 +20,7 @@ require_once('../lib/PHPContactor.setup.php')
 	optionally do things like hilight error input fields with a red border with CSS.
 	-->
 
-  <form name="contactForm" action="../lib/PHPContactor.setup.php" method="post">
+  <form name="contactForm" action="" method="post">
 
     <!-- ERROR PRINTING METHOD ONE - GROUP -->
     <?php /*
