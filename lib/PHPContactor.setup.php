@@ -22,5 +22,5 @@ $cform = new PHPContactor($settings);  // FormName needs to be given as defined 
 // PROCESS THE FORM, SENDING EMAILS OR WHATEVER THE SETTINGS ARE SETUP TO DO
 if($cform->submittedAndValid())
 {
-  $cform->process(); // this would trigger emails
+  $cform->process(); // this would trigger emails, and would also redirect to the "success_redirect" page.
 }
