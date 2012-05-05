@@ -6,6 +6,9 @@ require_once('../lib/PHPContactor.setup.php')
 ?>
 <html>
   <title>Title</title>
+  <style type="text/css">
+    .error { border:1px solid red; }
+  </style>
 </html>
 <body>
 

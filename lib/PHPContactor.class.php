@@ -34,7 +34,7 @@ class PHPContactor
   /**
    * Setup the project
    */
-  public function __construct($settings = array())
+  public function __construct($settings = array(), $required = array())
   {
     // get defaults
     $_default_settings = array(
@@ -49,7 +49,10 @@ class PHPContactor
     );
 
     // merge any of the settings into the default
-    $this->settings = array_merge($_default_settings, $settings);
+    $this->settings = array_merge($this->settings, $_default_settings, $settings);
+
+    // do the same for required
+    $this->required = array_merge($this->required, $required);
   }
 
   /**
@@ -107,10 +110,7 @@ class PHPContactor
       $rules = $this->getValidationRules($name);
 
       // if we have rules, it needs to be checked
-      if($rules !== false)
-      {
-        $this->validateField($name, $value, $rules);
-      }
+      $valid = $this->validateField($name, $value, $rules);
     }
   }
 
@@ -146,6 +146,7 @@ class PHPContactor
             // add an error
             $this->errors[$name] = sprintf('The %s field is required.', $name);
           }
+        break;
       }
     }
 
@@ -162,6 +163,9 @@ class PHPContactor
    */
   protected function getValidationRules($name)
   {
+    // will be used to store the requirement return val
+    $requirements = false;
+
     if(isset($this->required[$name]))
     {
       // get the requirements
@@ -178,10 +182,9 @@ class PHPContactor
         );
       }
     }
-    else
-    {
-      return false;
-    }
+
+    // return false if we get here, since we don't have any valid requirements
+    return $requirements;
   }
 
   /**
