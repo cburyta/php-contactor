@@ -18,7 +18,8 @@ else
     'from_email'       => 'email@fromdomain.com', // email address the form will be sent on behalf of
     'subject'          => 'Subject line here',
     'captcha_service'  => 'recaptcha',
-    'recaptcha_api'    => 'API-KEY-HERE',
+    'recaptcha_public_key'  => 'API KEY HERE',
+    'recaptcha_private_key' => 'API KEY HERE',
     'success_redirect' => '/thankyou-page', // could be used to redirect to to any page on success
     'error_format'     => '<div class="error">%%error%%</div>', // this would provide easy customization of error messages if needed
     'error_class'      => 'error', // if the field has an error, then this is the class that's returned in the printErrorClass method

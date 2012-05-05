@@ -1,5 +1,11 @@
 <?php
 
+// include recaptcha support
+// @todo: if ever we need more support for different captchas,
+//        probably a good idea to break includes for captcha libs
+//        into sub folders
+require_once('vendor/recaptchalib.php');
+
 class PHPContactor
 {
   /**
@@ -52,7 +58,14 @@ class PHPContactor
    */
   public function submittedAndValid()
   {
-    var_dump($_POST[$this->settings['form_name']]);exit;
+    if(isset($_POST[$this->settings['form_name']]))
+    {
+      $this->values = $_POST[$this->settings['form_name']];
+    }
+
+    // empyt means we are not valid
+    return (empty($this->values)) ? false : true;
+
     // @todo: check form was submitted, then validate
   }
 
@@ -156,6 +169,10 @@ class PHPContactor
       'Reply-To: ' . $from . "\r\n" .
 
     // send email
-    mail($this->settings['to_emails'], $this->settings['subject'], $message);
+    $sent = mail($this->settings['to_emails'], $this->settings['subject'], $message);
+
+    // redirect to the thank you page
+    header('Location: ' . $this->settings['success_redirect']);
+    exit;
   }
 }
