@@ -12,6 +12,7 @@ $settings = array(
   'recaptcha_api'    => 'API-KEY-HERE',
   'success_redirect' => '/thankyou-page', // could be used to redirect to to any page on success
   'error_format'     => '<div class="error">%%error%%</div>', // this would provide easy customization of error messages if needed
+  'error_class'      => 'error', // if the field has an error, then this is the class that's returned in the printErrorClass method
 );
 
 // Required fields here

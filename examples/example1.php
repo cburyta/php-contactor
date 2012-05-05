@@ -20,33 +20,44 @@ require_once('../lib/PHPContactor.setup.php')
 	optionally do things like hilight error input fields with a red border with CSS.
 	-->
 
-	<form name="contactForm" action="lib/PHPContactor.setup.php" method="post">
+  <form name="contactForm" action="lib/PHPContactor.setup.php" method="post">
 
-		<!-- ERROR PRINTING METHOD ONE - GROUP -->
-		<?php if($cform->hasErrors()): ?>
-			<?php foreach($cform->getErrors() as $errorMessage): ?>
-				<div class="error"><?php print $errorMessage ?></div>
-			<?php endforeach; ?>
-		<?php endif ?>
+    <!-- ERROR PRINTING METHOD ONE - GROUP -->
+    <?php /*
+    <?php if($cform->hasErrors()): ?>
+      <?php foreach($cform->getErrors() as $errorMessage): ?>
+        <div class="error"><?php print $errorMessage ?></div>
+      <?php endforeach; ?>
+    <?php endif ?>
+    */ ?>
 
     <?php $cform->printErrorMessages() ?>
 
-		<label for="field_name">Name:</label>
-		<input type="text" name="contactForm[name]" id="field_name" class="someclass <?php $cform->printErrorClass('name') ?>" />
-		<div class="error"><?php $cform->getErrorMessage('name'); ?></div>
+    <div>
+      <label for="field_name">Name:</label>
+      <input type="text" name="contactForm[name]" id="field_name" class="someclass <?php $cform->printErrorClass('name') ?>" />
+    </div>
 
-		<label for="field_message">Message:</label>
-		<textarea name="contactForm[message]" id="field_message"></textarea>
+    <div>
+      <label for="field_message">Message:</label>
+      <textarea name="contactForm[message]" id="field_message"></textarea>
+    </div>
 
-		<label for="field_other">Other:</label>
-		<textarea name="contactForm[other]" id="field_other"></textarea>
+    <div>
+      <label for="field_other">Other:</label>
+      <textarea name="contactForm[other]" id="field_other"></textarea>
+    </div>
 
-		<!-- USE THE PHP FORM TO PRINT YOUR CAPTCHA -->
-		<?php print $cform->getCaptcha(); ?>
+    <!-- USE THE PHP FORM TO PRINT YOUR CAPTCHA -->
+    <div>
+      <?php print $cform->printCaptcha(); ?>
+    </div>
 
-		<input type="submit" name="submit" />
+    <div>
+      <input type="submit" name="submit" />
+    </div>
 
-	</form>
+  </form>
 
 </body>
 </html>

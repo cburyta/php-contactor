@@ -109,4 +109,23 @@ class PHPContactor
   {
     return empty($this->errors) ? false : true;
   }
+
+  /**
+   * Returns a string that can be used as a class to indicate if the field has an error or not.
+   */
+  public function printErrorClass($name)
+  {
+    if($this->getErrorMessage($name))
+    {
+      return $this->settings['error_class'];
+    }
+  }
+
+  /**
+   * Prints the captcha required for validation.
+   */
+  public function printCaptcha()
+  {
+    return '<p>@todo build captcha</p>';
+  }
 }
