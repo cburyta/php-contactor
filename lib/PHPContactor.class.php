@@ -64,6 +64,24 @@ class PHPContactor
       $this->values = $_POST[$this->settings['form_name']];
     }
 
+    // validate captcha
+    $privatekey = $this->settings['recaptcha_private_key'];
+    $resp = recaptcha_check_answer($privatekey,
+                                   $_SERVER["REMOTE_ADDR"],
+                                   $_POST["recaptcha_challenge_field"],
+                                   $_POST["recaptcha_response_field"]);
+
+    if (!$resp->is_valid) {
+      // What happens when the CAPTCHA was entered incorrectly
+      $this->errors['captcha'] = "The reCAPTCHA wasn't entered correctly. Go back and try it again." .
+                                 "(reCAPTCHA said: " . $resp->error . ")";
+    }
+
+    if(count($this->errors) > 0)
+    {
+      return false;
+    }
+
     // empyt means we are not valid
     return (empty($this->values)) ? false : true;
 
