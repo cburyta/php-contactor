@@ -100,4 +100,13 @@ class PHPContactor
       return false;
     }
   }
+
+  /**
+   * Check to see if we have any errors in the queue.
+   * @return boolean If there are no items in the errors param, return false. Otherwise return true.
+   */
+  public function hasErrors()
+  {
+    return empty($this->errors) ? false : true;
+  }
 }
